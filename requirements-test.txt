@@ -1,0 +1,12 @@
+pytest
+coverage
+flake8
+black
+black[jupyter]
+isort
+pytest-cov
+mypy
+nb-mypy
+sphinx
+sphinx-rtd-theme
+commitizen
