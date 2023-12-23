@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 
 class IMDBDataTransformer:
-    def __init__(self, data_directory: str = "../../data", chunk_size: int = 100_000):
+    def __init__(self, data_directory: str = "data", chunk_size: int = 100_000):
         self.data_directory = Path(data_directory)
         self.chunk_size = chunk_size
         self.files = [
@@ -37,7 +37,7 @@ class IMDBDataTransformer:
             axis=1,
         )
 
-    def __preprocess_title_episode(self):
+    def __preprocess_title_ratings(self):
         self.current_chunk = self.current_chunk.rename(
             {
                 "tconst": "title_id",
@@ -103,7 +103,7 @@ class IMDBDataTransformer:
     def __preprocess_chunk(self):
         file_handler_map = {
             "name_basics": self.__preprocess_name_basics,
-            "title_episode": self.__preprocess_title_episode,
+            "title_ratings": self.__preprocess_title_ratings,
             "title_basics": self.__preprocess_title_basics,
             "title_crew": self.__preprocess_title_crew,
             "title_principals": self.__preprocess_title_principals,
