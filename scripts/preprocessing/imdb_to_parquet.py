@@ -52,17 +52,18 @@ class IMDBDataTransformer:
             self.current_chunk["runtimeMinutes"], errors="coerce"
         )
         self.current_chunk = self.current_chunk[
-            (self.current_chunk["titleType"] == "movie") & (self.current_chunk["primaryTitle"].notna())
+            (self.current_chunk["titleType"] == "movie")
+            & (self.current_chunk["isAdult"] == 0)
+            & (self.current_chunk["primaryTitle"].notna())
         ]
         self.current_chunk = self.current_chunk[
-            ["tconst", "primaryTitle", "isAdult", "startYear", "runtimeMinutes", "genres"]
+            ["tconst", "primaryTitle", "startYear", "runtimeMinutes", "genres"]
         ]
 
         self.current_chunk = self.current_chunk.rename(
             {
                 "tconst": "title_id",
                 "primaryTitle": "title",
-                "isAdult": "is_adult",
                 "startYear": "year",
                 "runtimeMinutes": "runtime_minutes",
             },
@@ -126,7 +127,7 @@ class IMDBDataTransformer:
                 tsv_file, sep="\t", chunksize=self.chunk_size, low_memory=False, na_values="\\N"
             )
 
-            for index, chunk in tqdm(enumerate(stream), total=total_chunks, desc="Preprocessing"):
+            for index, chunk in tqdm(enumerate(stream), total=total_chunks, desc=f"Transforming {file}"):
                 self.current_chunk = chunk
                 self.__preprocess_chunk()
 
