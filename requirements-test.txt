@@ -6,6 +6,7 @@ black[jupyter]
 isort
 pytest-cov
 mypy
+types-requests
 nb-mypy
 sphinx
 sphinx-rtd-theme
