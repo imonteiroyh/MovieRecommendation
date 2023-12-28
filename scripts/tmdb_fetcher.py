@@ -186,11 +186,11 @@ def main(
 ):
     for fetcher in [
         TMDBTopRatedMoviesFetcher,
-        TMDBMovieProvidersFetcher,
-        TMDBProvidersFetcher,
-        TMDBGenresFetcher,
-        TMDBMovieAdditionalInfoFetcher,
-        TMDBMovieKeywordsFetcher,
+        # TMDBMovieProvidersFetcher,
+        # TMDBProvidersFetcher,
+        # TMDBGenresFetcher,
+        # TMDBMovieAdditionalInfoFetcher,
+        # TMDBMovieKeywordsFetcher,
     ]:
         fetcher(data_directory).run()
 
