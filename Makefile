@@ -35,13 +35,18 @@ env:			## Make an environment
 format:			## Format code using isort and black
 	isort scripts/ --settings-file config/setup.cfg
 	isort notebooks/ --settings-file config/setup.cfg
+	isort app/ --settings-file config/setup.cfg
 	black -l 110 scripts/
 	black -l 110 notebooks/
+	black -l 110 app/
 
 
 .PHONY: lint
 lint:			## Run linters
 	flake8 scripts/ --append-config=config/setup.cfg
+	flake8 app/ --append-config=config/setup.cfg
 	black -l 110 --check scripts/
 	black -l 110 --check notebooks/
+	black -l 110 --check app/
 	mypy scripts/ --config-file config/setup.cfg
+	mypy app/ --config-file config/setup.cfg
