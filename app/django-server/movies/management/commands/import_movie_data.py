@@ -1,16 +1,16 @@
-import json
 import os
 
+import pandas as pd
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from ...models import Providers, Genre, Movie
-import pandas as pd
+
+from ...models import Genre, Movie, Providers
 
 
 class Command(BaseCommand):
     @staticmethod
     def _split_ids(data):
-        return data.split(',') if data is not None else []
+        return data.split(",") if data is not None else []
 
     @staticmethod
     def _create_providers(providers_data):
@@ -63,7 +63,9 @@ class Command(BaseCommand):
                         year=movie_data.year,
                         runtime=movie_data.runtime,
                         actors=movie_data.actors,
-                        free=movie_data.free if movie_data.free is not None and isinstance(movie_data.free, bool) else False,
+                        free=movie_data.free
+                        if movie_data.free is not None and isinstance(movie_data.free, bool)
+                        else False,
                         link=movie_data.link,
                     )
                     [instance.genres.add(genre) for genre in genres]
@@ -77,14 +79,15 @@ class Command(BaseCommand):
                         print(f"saving {count} records of {total_movies}")
 
             except Exception as e:
-                print(str(e), f'Error in data{movie_data}')
-        print('Task finish')
+                print(str(e), f"Error in data{movie_data}")
+        print("Task finish")
 
     def handle(self, *args, **options):
         from django.conf import settings
-        movie_data_path = os.path.join(settings.STATIC_DIR, 'app_data.parquet')
-        genres_data_path = os.path.join(settings.STATIC_DIR, 'genres.parquet')
-        providers_data_path = os.path.join(settings.STATIC_DIR, 'providers.parquet')
+
+        movie_data_path = os.path.join(settings.STATIC_DIR, "app_data.parquet")
+        genres_data_path = os.path.join(settings.STATIC_DIR, "genres.parquet")
+        providers_data_path = os.path.join(settings.STATIC_DIR, "providers.parquet")
         movies_data = pd.read_parquet(movie_data_path)
         genres_data = pd.read_parquet(genres_data_path)
         providers_data = pd.read_parquet(providers_data_path)
@@ -92,5 +95,3 @@ class Command(BaseCommand):
         self._create_providers(providers_data)
         self._create_genres(genres_data)
         self._create_movies(movies_data)
-
-
